@@ -8,7 +8,7 @@ export class AdminPage {
     }
 
     async goto() {
-        await this.page.goto('https://localhost:3000/admin'); 
+        await this.page.goto('https://localhost:3000/admin');
     }
 
     async expectAccessDenied() {
@@ -21,10 +21,10 @@ export class AdminPage {
 
     async createProf(name: string, campusID: string, password?: string, isAdmin: boolean = false) {
         await this.page.getByTestId('btn-new-prof').click();
-        
+
         await this.page.getByTestId('input-prof-name').fill(name);
         await this.page.getByTestId('input-prof-campusid').fill(campusID);
-        
+
         if (password) {
             await this.page.getByTestId('input-prof-password').fill(password);
         }
@@ -33,8 +33,8 @@ export class AdminPage {
             await this.page.getByTestId('checkbox-prof-admin').check();
         }
 
-        
-        
+
+
         await this.page.getByTestId('btn-save-prof').click();
 
     }

@@ -9,7 +9,7 @@ export class LoginModal {
 
     async login(campusId: string, passwort: string) {
         // 1. Öffne das Modal über den globalen Login-Button (meist im Header)
-        
+
         await this.page.getByRole('button', { name: 'Login' }).click();
 
         // 2. Stelle sicher, dass das Modal da ist
@@ -27,22 +27,22 @@ export class LoginModal {
         await expect(dialog).not.toBeVisible();
     }
     async failLogin(campusId: string, passwort: string) {
-        
-        
+
+
         await this.page.getByRole('button', { name: 'Login' }).click();
 
-        
+
         const dialog = this.page.getByRole('dialog');
         await expect(dialog).toBeVisible();
 
-        
+
         await this.page.getByTestId('input-login-campusid').fill(campusId);
         await this.page.getByTestId('input-login-password').fill(passwort);
 
-        
+
         await this.page.getByTestId('button-login-submit').click();
 
-        
+
         await expect(dialog).toBeVisible();
         await expect(this.page.getByText('Login fehlgeschlagen')).toBeVisible();
         await this.page.getByTestId('button-login-cancel').click();

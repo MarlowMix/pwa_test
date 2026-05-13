@@ -2,8 +2,6 @@ import { test, expect } from '@playwright/test';
 import { GebietePage } from '../pages/GebietPage';
 import { LoginModal } from '../pages/LoginModal';
 
-
-
 const VALID_ID = '459810';
 const VALID_PW = '123_abc_ABC';
 
@@ -34,7 +32,6 @@ test.describe('Gebiete & Themen Management', () => {
         await gebietePage.expectGebietVisible(testGebiet);
         await gebietePage.expectGebietevisible(); 
         
-
         // 2. Create & Verify Thema
         await gebietePage.addThema(testThema, 'Testen mit Playwright', 'bsc');
         await gebietePage.expectNewThemaVisible(testThema);

@@ -2,8 +2,6 @@ import { test } from '@playwright/test';
 import { HomePage } from '../pages/HomePage';
 import { LoginModal } from '../pages/LoginModal';
 
-
-
 const VALID_ID = '459810';
 const VALID_PW = '123_abc_ABC';
 

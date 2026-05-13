@@ -8,23 +8,23 @@ export class HomePage {
     }
 
     async goto() {
-        
+
         await this.page.goto('https://localhost:3000/');
     }
 
-    async expectPrivateNotVisable(){
+    async expectPrivateNotVisable() {
         await expect(this.page.getByTestId('gebiet-KI')).not.toBeVisible();
     }
-    async expectPrivateVisable(){
+    async expectPrivateVisable() {
         await expect(this.page.getByTestId('gebiet-KI')).toBeVisible();
     }
-    async expectWebGebietVisible(){
+    async expectWebGebietVisible() {
         await expect(this.page.getByTestId('gebiet-Web')).toBeVisible();
     }
-    async openWebAccordion(){
+    async openWebAccordion() {
         await this.page.getByTestId('gebiet-Web').click();
     }
-    async expectThemenVisible(){
+    async expectThemenVisible() {
         await expect(this.page.getByTestId('thema-Entwicklung einer Lernplattform')).toBeVisible();
         await expect(this.page.getByTestId('thema-Entwicklung eines Online-Shops')).toBeVisible();
     }

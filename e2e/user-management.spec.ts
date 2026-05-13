@@ -14,7 +14,7 @@ const NEW_PROF_PW = 'testPasswort123!';
 
 test.describe('User-Management (Professoren)', () => {
 
-    
+
     test('Login, Anlage, Prüfung, Änderung und Löschung eines Users', async ({ page }) => {
         const loginModal = new LoginModal(page);
         const homePage = new HomePage(page);
@@ -27,7 +27,7 @@ test.describe('User-Management (Professoren)', () => {
 
         // 2. Zur Admin-Seite navigieren
         await adminPage.goto();
-        
+
         // Auflisten der User prüfen (Standard-User Moriarty muss da sein)
         await adminPage.showAll();
         await adminPage.expectProfExists(ADMIN_ID);
@@ -40,7 +40,7 @@ test.describe('User-Management (Professoren)', () => {
 
         // 4. Erfolgreiches Anlegen eines neuen Users
         await adminPage.createProf('Test Professor', NEW_PROF_ID, NEW_PROF_PW, false);
-        
+
         // Prüfen, ob der neue User in der Liste auftaucht (liest die Seite neu aus / filtert)
         await adminPage.showAll();
         await adminPage.expectProfExists(NEW_PROF_ID);
@@ -48,11 +48,11 @@ test.describe('User-Management (Professoren)', () => {
         // 5. Rechte prüfen: Einloggen mit dem NEUEN (Nicht-Admin) User
         // Zuerst ausloggen
         await page.getByRole('button', { name: 'Logout' }).click();
-        
+
         // Login mit dem neuen Prof
         await loginModal.login(NEW_PROF_ID, NEW_PROF_PW);
         await loginModal.expectLoggedIn();
-        
+
         // Versuch, auf die Admin-Seite zu gehen
         await adminPage.goto();
         await adminPage.expectAccessDenied(); // Muss geblockt werden!
@@ -61,11 +61,11 @@ test.describe('User-Management (Professoren)', () => {
         await page.getByRole('button', { name: 'Logout' }).click();
         await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
         await loginModal.login(ADMIN_ID, ADMIN_PW);
-        await loginModal.expectLoggedIn(); 
+        await loginModal.expectLoggedIn();
 
         await adminPage.goto();
         await adminPage.showAll();
-        
+
         // Löscchen
         await adminPage.deleteProf(NEW_PROF_ID);
         // Prüfen, ob er weg ist

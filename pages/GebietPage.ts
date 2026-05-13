@@ -8,17 +8,17 @@ export class GebietePage {
     }
 
     async goto() {
-        
+
         await this.page.goto('https://localhost:3000/meineGebiete');
     }
     async expectAccessDenied() {
         await expect(this.page.getByText('Bitte einloggen.')).toBeVisible();
     }
-    async expectGebietevisible(){
+    async expectGebietevisible() {
         await expect(this.page.getByTestId('gebiet-Web')).toBeVisible();
         await expect(this.page.getByTestId('gebiet-KI')).toBeVisible();
     }
-    async addThema(themaTitel:string,beschreibung:string,abschluss:"bsc"|"msc"|"any"){
+    async addThema(themaTitel: string, beschreibung: string, abschluss: "bsc" | "msc" | "any") {
         await expect(this.page.getByRole('dialog')).not.toBeVisible();
         await this.page.getByTestId('gebiet-Web').click();
         await expect(this.page.getByTestId('button-add-thema-Web')).toBeVisible();
@@ -30,31 +30,31 @@ export class GebietePage {
         await this.page.getByTestId('button-thema-save').click();
         await expect(this.page.getByRole('dialog')).not.toBeVisible();
     }
-    async expectNewThemaVisible(themaTitel:string){
+    async expectNewThemaVisible(themaTitel: string) {
         await expect(this.page.getByTestId(`thema-titel-${themaTitel}`)).toBeVisible();
     }
-    async deleteNewThema(themaTitel:string){
+    async deleteNewThema(themaTitel: string) {
         await this.page.once('dialog', dialog => dialog.accept());
-        await this.page.getByTestId(`button-${themaTitel}-delete`).click();  
+        await this.page.getByTestId(`button-${themaTitel}-delete`).click();
     }
-    async expectNewNotThemaVisible(themaTitel:string){
+    async expectNewNotThemaVisible(themaTitel: string) {
         await expect(this.page.getByTestId(`thema-titel${themaTitel}`)).not.toBeVisible();
     }
-    async addNewGebiet(name:string){
+    async addNewGebiet(name: string) {
         await this.page.getByTestId('button-add-gebiet').click();
         await this.page.getByTestId('input-gebiet-name').fill(name);
         await this.page.getByTestId('button-gebiet-save').click();
         await expect(this.page.getByRole('dialog')).not.toBeVisible();
     }
-    async expectGebietVisible(name:string){
+    async expectGebietVisible(name: string) {
         await expect(this.page.getByTestId(`gebiet-${name}`)).toBeVisible();
 
     }
-    async deleteGebiet(name:string){
+    async deleteGebiet(name: string) {
         await this.page.once('dialog', dialog => dialog.accept());
-        await this.page.getByTestId(`button-delete-${name}`).click();  
+        await this.page.getByTestId(`button-delete-${name}`).click();
     }
-    async expectGebietNotVisible(name:string){
+    async expectGebietNotVisible(name: string) {
         await expect(this.page.getByTestId(`gebiet-${name}`)).not.toBeVisible();
 
     }
