@@ -32,11 +32,8 @@ test.describe('User-Management (Professoren)', () => {
         await adminPage.showAll();
         await adminPage.expectProfExists(ADMIN_ID);
 
-        // 3. Fehler-Zyklus: Anlegen ohne Pflichtfelder (Testet den Frontend-Validator)
-        // Wir übergeben leere Strings, der Speichern-Button sollte den Dialog nicht schließen (und vermutlich eine Fehlermeldung zeigen)
-        await adminPage.createProf('', '', '');
-        await expect(page.getByText('Name und CampusID dürfen nicht leer sein.')).toBeVisible(); // Passe diesen Text an deinen Error-State in ProfDialog.tsx an!
-        await page.getByRole('button', { name: 'Abbrechen' }).click(); // Dialog schließen, um sauber weiterzumachen
+        // 3. Fehler-Zyklus: Anlegen ohne Pflichtfelder
+        await adminPage.failCreateProf(); 
 
         // 4. Erfolgreiches Anlegen eines neuen Users
         await adminPage.createProf('Test Professor', NEW_PROF_ID, NEW_PROF_PW, false);

@@ -19,24 +19,35 @@ export class AdminPage {
         await this.page.getByRole('button', { name: 'Alle anzeigen' }).click();
     }
 
-    async createProf(name: string, campusID: string, password?: string, isAdmin: boolean = false) {
+    async createProf(name: string, campusID: string, password: string, isAdmin: boolean = false) {
         await this.page.getByTestId('btn-new-prof').click();
-
         await this.page.getByTestId('input-prof-name').fill(name);
         await this.page.getByTestId('input-prof-campusid').fill(campusID);
-
-        if (password) {
-            await this.page.getByTestId('input-prof-password').fill(password);
-        }
-
+        await this.page.getByTestId('input-prof-password').fill(password);
         if (isAdmin) {
             await this.page.getByTestId('checkbox-prof-admin').check();
         }
-
-
-
+        // 1. Starte einen Listener, der auf die API-Antwort WARTET
+        const responsePromise = this.page.waitForResponse(response =>
+            response.request().method() === 'POST'
+        );
+        // 2. Klicke auf Speichern (löst den Request aus)
         await this.page.getByTestId('btn-save-prof').click();
 
+        // 3. Fange die Antwort auf, sobald sie kommt
+        const response = await responsePromise;
+
+        // 4. Prüfe den Status Code
+        expect(response.status()).toBe(201);
+    }
+
+    async failCreateProf() {
+        await this.page.getByTestId('btn-new-prof').click();
+        await this.page.getByTestId('input-prof-name').fill(" ");
+        await this.page.getByTestId('input-prof-campusid').fill("");
+        await this.page.getByTestId('btn-save-prof').click();
+        await expect(this.page.getByText('Name und CampusID dürfen nicht leer sein.')).toBeVisible(); // Passe diesen Text an deinen Error-State in ProfDialog.tsx an!
+        await this.page.getByRole('button', { name: 'Abbrechen' }).click();
     }
 
     async expectProfExists(campusID: string) {
