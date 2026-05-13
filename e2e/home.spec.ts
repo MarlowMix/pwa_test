@@ -14,8 +14,8 @@ test.describe('Home Page & Login Flow', () => {
         const loginModal = new LoginModal(page);
 
         await homePage.goto();
-        await loginModal.login('invalidUser', 'wrongPassword');
-        await loginModal.expectLoginError();
+        await loginModal.failLogin('invalidUser', 'wrongPassword');
+        
     });
 
     test('Login Successful', async ({ page }) => {

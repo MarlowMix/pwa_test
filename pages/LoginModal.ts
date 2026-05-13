@@ -17,8 +17,8 @@ export class LoginModal {
         await expect(dialog).toBeVisible();
 
         // 3. Fülle die Felder aus (Passe die Test-IDs an deine LoginDialog.tsx an!)
-        await this.page.getByTestId('input-campusid').fill(campusId);
-        await this.page.getByTestId('input-password').fill(passwort);
+        await this.page.getByTestId('input-login-campusid').fill(campusId);
+        await this.page.getByTestId('input-login-password').fill(passwort);
 
         // 4. Klicke auf den Bestätigen-Button im Modal
         await this.page.getByTestId('button-login-submit').click();
@@ -26,13 +26,32 @@ export class LoginModal {
         // 5. WICHTIG: Warte, bis das Modal nach erfolgreichem Login verschwindet
         await expect(dialog).not.toBeVisible();
     }
+    async failLogin(campusId: string, passwort: string) {
+        
+        
+        await this.page.getByRole('button', { name: 'Login' }).click();
+
+        
+        const dialog = this.page.getByRole('dialog');
+        await expect(dialog).toBeVisible();
+
+        
+        await this.page.getByTestId('input-login-campusid').fill(campusId);
+        await this.page.getByTestId('input-login-password').fill(passwort);
+
+        
+        await this.page.getByTestId('button-login-submit').click();
+
+        
+        await expect(dialog).toBeVisible();
+        await expect(this.page.getByText('Login fehlgeschlagen')).toBeVisible();
+        await this.page.getByTestId('button-login-cancel').click();
+        await expect(dialog).not.toBeVisible();
+    }
     async expectLoggedIn() {
         // Prüfe, ob der Logout-Button existiert
         await expect(this.page.getByRole('button', { name: 'Logout' })).toBeVisible();
     }
 
-    async expectLoginError() {
-        
-        await expect(this.page.getByText('Login fehlgeschlagen')).toBeVisible();
-    }
+
 }

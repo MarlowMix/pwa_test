@@ -19,13 +19,16 @@ export class GebietePage {
         await expect(this.page.getByTestId('gebiet-KI')).toBeVisible();
     }
     async addThema(themaTitel:string,beschreibung:string,abschluss:"bsc"|"msc"|"any"){
+        await expect(this.page.getByRole('dialog')).not.toBeVisible();
         await this.page.getByTestId('gebiet-Web').click();
-        await expect(this.page.getByTestId('button-add-thema')).toBeVisible();
-        await this.page.getByTestId('button-add-thema').click();
+        await expect(this.page.getByTestId('button-add-thema-Web')).toBeVisible();
+        await this.page.getByTestId('button-add-thema-Web').click();
+        await expect(this.page.getByRole('dialog')).toBeVisible();
         await this.page.getByTestId('input-thema-titel').fill(themaTitel);
         await this.page.getByTestId('input-thema-beschreibung').fill(beschreibung);
-        await this.page.getByTestId('select-abschluss').selectOption(abschluss);
+        await this.page.getByTestId('select-thema-abschluss').selectOption(abschluss);
         await this.page.getByTestId('button-thema-save').click();
+        await expect(this.page.getByRole('dialog')).not.toBeVisible();
     }
     async expectNewThemaVisible(themaTitel:string){
         await expect(this.page.getByTestId(`thema-titel-${themaTitel}`)).toBeVisible();
@@ -41,7 +44,7 @@ export class GebietePage {
         await this.page.getByTestId('button-add-gebiet').click();
         await this.page.getByTestId('input-gebiet-name').fill(name);
         await this.page.getByTestId('button-gebiet-save').click();
-
+        await expect(this.page.getByRole('dialog')).not.toBeVisible();
     }
     async expectGebietVisible(name:string){
         await expect(this.page.getByTestId(`gebiet-${name}`)).toBeVisible();
