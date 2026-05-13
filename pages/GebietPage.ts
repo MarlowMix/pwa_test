@@ -33,10 +33,6 @@ export class GebietePage {
     async expectNewThemaVisible(themaTitel: string) {
         await expect(this.page.getByTestId(`thema-titel-${themaTitel}`)).toBeVisible();
     }
-    async deleteNewThema(themaTitel: string) {
-        await this.page.once('dialog', dialog => dialog.accept());
-        await this.page.getByTestId(`button-${themaTitel}-delete`).click();
-    }
     async expectNewNotThemaVisible(themaTitel: string) {
         await expect(this.page.getByTestId(`thema-titel${themaTitel}`)).not.toBeVisible();
     }
@@ -51,11 +47,68 @@ export class GebietePage {
 
     }
     async deleteGebiet(name: string) {
-        await this.page.once('dialog', dialog => dialog.accept());
+        this.page.once('dialog', dialog => dialog.accept());
+
+        const responsePromise = this.page.waitForResponse(response =>
+            response.request().method() === 'DELETE'
+        );
+
         await this.page.getByTestId(`button-delete-${name}`).click();
+
+        const response = await responsePromise;
+        expect(response.status()).toBe(204);
+    }
+
+    async deleteNewThema(themaTitel: string) {
+        this.page.once('dialog', dialog => dialog.accept());
+
+        const responsePromise = this.page.waitForResponse(response =>
+            response.request().method() === 'DELETE'
+        );
+
+        await this.page.getByTestId(`button-${themaTitel}-delete`).click();
+
+        const response = await responsePromise;
+        expect(response.status()).toBe(204);
     }
     async expectGebietNotVisible(name: string) {
         await expect(this.page.getByTestId(`gebiet-${name}`)).not.toBeVisible();
 
     }
+    async editGebiet(oldName: string, newName: string) {
+        // 1. Bearbeiten-Button des spezifischen Gebiets klicken
+        await this.page.getByTestId(`button-edit-${oldName}`).click();
+
+        // 2. Neuen Text eingeben
+        await this.page.getByTestId('input-gebiet-name').fill(newName);
+
+        // 3. Sniffer starten (Wartet auf PUT/PATCH für das Gebiet)
+        const responsePromise = this.page.waitForResponse(response =>
+            response.request().method() === 'PUT' // oder 'PATCH'
+        );
+
+        // 4. Speichern klicken
+        await this.page.getByTestId('button-gebiet-save').click();
+
+        // 5. Antwort abwarten und HTTP 200 (OK) prüfen
+        const response = await responsePromise;
+        expect(response.status()).toBe(200);
+    }
+
+    async editThema(oldTitel: string, newTitel: string) {
+        // 1. Bearbeiten-Button des spezifischen Themas klicken
+        await this.page.getByTestId(`button-${oldTitel}-edit`).click();
+        // 2. Neuen Text eingeben
+        await this.page.getByTestId('input-thema-titel').fill(newTitel);
+        // 3. Sniffer starten
+        const responsePromise = this.page.waitForResponse(response =>
+            response.request().method() === 'PUT' // oder 'PATCH'
+        );
+        // 4. Speichern klicken
+        await this.page.getByTestId('button-thema-save').click();
+        // 5. Antwort abwarten und Status prüfen
+        const response = await responsePromise;
+        expect(response.status()).toBe(200);
+    }
+
 }

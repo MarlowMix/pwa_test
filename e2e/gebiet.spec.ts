@@ -26,22 +26,30 @@ test.describe('Gebiete & Themen Management', () => {
 
         const testGebiet = `Gebiet + ${Date.now()}`.slice(-8);
         const testThema = `Thema + ${Date.now()}`.slice(-8);
+        const testGebiet2 = `Gebiet2 + ${Date.now()}`.slice(-8);
+        const testThema2 = `Thema2 + ${Date.now()}`.slice(-8);
 
         // 1. Create & Verify Gebiet
         await gebietePage.addNewGebiet(testGebiet);
         await gebietePage.expectGebietVisible(testGebiet);
         await gebietePage.expectGebietevisible(); 
+
+        await gebietePage.editGebiet(testGebiet, testGebiet2);
+        await gebietePage.expectGebietVisible(testGebiet2);
         
         // 2. Create & Verify Thema
         await gebietePage.addThema(testThema, 'Testen mit Playwright', 'bsc');
         await gebietePage.expectNewThemaVisible(testThema);
+        
+        await gebietePage.editThema(testThema, testThema2);
+        await gebietePage.expectNewThemaVisible(testThema2);
 
         // 3. Delete & Verify Thema
-        await gebietePage.deleteNewThema(testThema);
-        await gebietePage.expectNewNotThemaVisible(testThema);
+        await gebietePage.deleteNewThema(testThema2);
+        await gebietePage.expectNewNotThemaVisible(testThema2);
 
         // 4. Delete & Verify Gebiet
-        await gebietePage.deleteGebiet(testGebiet);
-        await gebietePage.expectGebietNotVisible(testGebiet);
+        await gebietePage.deleteGebiet(testGebiet2);
+        await gebietePage.expectGebietNotVisible(testGebiet2);
     });
 });
