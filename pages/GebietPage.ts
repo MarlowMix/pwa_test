@@ -51,4 +51,8 @@ export class GebietePage {
         await this.page.once('dialog', dialog => dialog.accept());
         await this.page.getByTestId(`button-delete-${name}`).click();  
     }
+    async expectGebietNotVisible(name:string){
+        await expect(this.page.getByTestId(`gebiet-${name}`)).not.toBeVisible();
+
+    }
 }

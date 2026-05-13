@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
+import { HomePage } from '../pages/HomePage';
 import { AdminPage } from '../pages/AdminPage';
+import { LoginModal } from '../pages/LoginModal';
 
 
 // Testdaten für den Login
@@ -13,15 +14,16 @@ const NEW_PROF_PW = 'testPasswort123!';
 
 test.describe('User-Management (Professoren)', () => {
 
-    // --- Der große E2E Durchlauf (Admin-Login & CRUD) ---
+    
     test('Login, Anlage, Prüfung, Änderung und Löschung eines Users', async ({ page }) => {
-        const loginPage = new LoginPage(page);
+        const loginModal = new LoginModal(page);
+        const homePage = new HomePage(page);
         const adminPage = new AdminPage(page);
 
         // 1. Erfolgreicher Login als Administrator
-        await loginPage.goto();
-        await loginPage.login(ADMIN_ID, ADMIN_PW);
-        await loginPage.expectLoggedIn();
+        await homePage.goto();
+        await loginModal.login(ADMIN_ID, ADMIN_PW);
+        await loginModal.expectLoggedIn();
 
         // 2. Zur Admin-Seite navigieren
         await adminPage.goto();
@@ -48,8 +50,8 @@ test.describe('User-Management (Professoren)', () => {
         await page.getByRole('button', { name: 'Logout' }).click();
         
         // Login mit dem neuen Prof
-        await loginPage.login(NEW_PROF_ID, NEW_PROF_PW);
-        await loginPage.expectLoggedIn();
+        await loginModal.login(NEW_PROF_ID, NEW_PROF_PW);
+        await loginModal.expectLoggedIn();
         
         // Versuch, auf die Admin-Seite zu gehen
         await adminPage.goto();
@@ -58,8 +60,8 @@ test.describe('User-Management (Professoren)', () => {
         // 6. Aufräumen: Wieder als Admin einloggen und den Test-User löschen
         await page.getByRole('button', { name: 'Logout' }).click();
         await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
-        await loginPage.login(ADMIN_ID, ADMIN_PW);
-        await loginPage.expectLoggedIn(); 
+        await loginModal.login(ADMIN_ID, ADMIN_PW);
+        await loginModal.expectLoggedIn(); 
 
         await adminPage.goto();
         await adminPage.showAll();
