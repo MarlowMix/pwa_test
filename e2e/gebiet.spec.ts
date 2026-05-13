@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import { GebietePage } from '../pages/GebietPage';
 import { LoginModal } from '../pages/LoginModal';
 
@@ -40,7 +40,7 @@ test.describe('Gebiete & Themen Management', () => {
         // 2. Create & Verify Thema
         await gebietePage.addThema(testThema, 'Testen mit Playwright', 'bsc');
         await gebietePage.expectNewThemaVisible(testThema);
-        
+
         await gebietePage.editThema(testThema, testThema2);
         await gebietePage.expectNewThemaVisible(testThema2);
 
