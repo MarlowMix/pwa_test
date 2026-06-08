@@ -8,7 +8,7 @@ export class AdminPage {
     }
 
     async goto() {
-        await this.page.goto('https://localhost:3000/admin');
+        await this.page.goto('/admin');
     }
 
     async expectAccessDenied() {

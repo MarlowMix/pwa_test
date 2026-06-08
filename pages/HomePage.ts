@@ -9,7 +9,7 @@ export class HomePage {
 
     async goto() {
 
-        await this.page.goto('https://localhost:3000/');
+        await this.page.goto('/');
     }
 
     async expectPrivateNotVisable() {

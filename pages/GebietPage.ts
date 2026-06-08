@@ -9,7 +9,7 @@ export class GebietePage {
 
     async goto() {
 
-        await this.page.goto('https://localhost:3000/meineGebiete');
+        await this.page.goto('/meineGebiete');
     }
     async expectAccessDenied() {
         await expect(this.page.getByText('Bitte einloggen.')).toBeVisible();
