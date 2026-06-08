@@ -27,7 +27,12 @@ export class GebietePage {
         await this.page.getByTestId('input-thema-titel').fill(themaTitel);
         await this.page.getByTestId('input-thema-beschreibung').fill(beschreibung);
         await this.page.getByTestId('select-thema-abschluss').selectOption(abschluss);
+        const responsePromise = this.page.waitForResponse(response =>
+            response.request().method() === 'POST'
+        );
         await this.page.getByTestId('button-thema-save').click();
+        const response = await responsePromise;
+        expect(response.status()).toBe(201);
         await expect(this.page.getByRole('dialog')).not.toBeVisible();
     }
     async expectNewThemaVisible(themaTitel: string) {
@@ -39,7 +44,12 @@ export class GebietePage {
     async addNewGebiet(name: string) {
         await this.page.getByTestId('button-add-gebiet').click();
         await this.page.getByTestId('input-gebiet-name').fill(name);
+        const responsePromise = this.page.waitForResponse(response =>
+            response.request().method() === 'POST'
+        );
         await this.page.getByTestId('button-gebiet-save').click();
+        const response = await responsePromise;
+        expect(response.status()).toBe(201);
         await expect(this.page.getByRole('dialog')).not.toBeVisible();
     }
     async expectGebietVisible(name: string) {

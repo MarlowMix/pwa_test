@@ -1,0 +1,138 @@
+# .github/workflows/e2e.yml
+#
+# CI Pipeline 3 — E2E Tests
+# Starts the full stack (MongoDB + backend + frontend) as Docker services,
+# then runs Playwright tests inside the official Playwright container image.
+# Playwright is NOT installed at runtime — it is pre-installed in the container.
+#
+# Triggers:
+#   - Push that changes any test file or config
+#   - Manual trigger via the GitHub Actions UI (workflow_dispatch)
+#
+# Required GitHub settings:
+#   Settings → Actions → General → Workflow permissions → Read and write
+#   (so the runner can pull private packages from ghcr.io via GITHUB_TOKEN)
+
+name: E2E Tests
+
+on:
+  push:
+    paths:
+      - 'e2e/**'             # any E2E test file changed
+      - 'pages/**'           # any page-object file changed
+      - 'playwright.config.ts'
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:         # allow manual trigger from the GitHub Actions UI
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    # The job runs inside the official Playwright Docker image.
+    # All browsers are pre-installed — no runtime installation needed.
+    container:
+      image: mcr.microsoft.com/playwright:v1.60.0-noble
+
+    # ── Services ───────────────────────────────────────────────────────────
+    # All three services share the same Docker network as the job container.
+    # They are reachable inside the job container by their service label name
+    # (e.g. http://backend:3001, http://frontend:80).
+    # No docker-compose is used — services are started directly by GitHub Actions.
+    services:
+
+      # MongoDB — official image, no custom Dockerfile needed
+      mongo:
+        image: mongo:7
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin       # CI-only credentials, not sensitive
+          MONGO_INITDB_ROOT_PASSWORD: password
+          MONGO_INITDB_DATABASE: themenbrett
+        # Healthcheck so the runner knows when Mongo is actually ready
+        options: >-
+          --health-cmd "mongosh --eval \"db.adminCommand('ping')\""
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+          --health-start-period 30s
+
+      # Backend — pulled from ghcr.io; credentials needed because the package may be private
+      backend:
+        image: ghcr.io/marlowmix/pwa_backend:latest
+        credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}   # grants read access to ghcr.io packages
+        env:
+          # Connect to the mongo service by its label name on the shared Docker network
+          DB_CONNECTION_STRING: "mongodb://admin:password@mongo:27017/themenbrett?authSource=admin"
+          DB_PREFILL: "true"    # seed the database so tests have data to work with
+          USE_SSL: "false"      # disable HTTPS in CI — no cert available; tests use HTTP
+          HTTP_PORT: "3001"
+          HTTPS_PORT: "443"     # unused when USE_SSL=false, but the variable must be set
+          JWT_SECRET: "ci-only-jwt-secret-not-used-in-production"
+          JWT_TTL: "300"
+          COOKIE_NAME: "access_token"
+          # CORS origin = the frontend service as seen by the browser (Chromium inside the job container)
+          CORS_ORIGIN: "http://frontend"
+        # Restart the container if it crashes (e.g. because Mongo wasn't ready yet)
+        options: --restart on-failure:5
+
+      # Frontend — pulled from ghcr.io; entrypoint injects VITE_API_SERVER_URL at start
+      frontend:
+        image: ghcr.io/marlowmix/pwa_frontend:latest
+        credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          # URL of the backend as seen from the browser running inside Playwright container
+          VITE_API_SERVER_URL: "http://backend:3001"
+
+    # ── Steps ──────────────────────────────────────────────────────────────
+    steps:
+      # Step 1: Check out the test repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Install test dependencies.
+      # PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 prevents npm from trying to re-download
+      # browsers — they are already installed in the container image.
+      - name: Install dependencies
+        run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+
+      # Step 3: Wait until the backend is responding before running tests.
+      # The backend may take a few seconds to connect to MongoDB and start listening.
+      # curl returns exit 0 for any HTTP response (even 401/404), so this loop
+      # exits as soon as the server accepts connections.
+      - name: Wait for backend to be ready
+        run: |
+          echo "Waiting for backend..."
+          timeout 60 sh -c 'until curl -s http://backend:3001/api/gebiet > /dev/null 2>&1; do sleep 2; done'
+          echo "Backend is ready."
+
+      # Step 4: Wait until the frontend nginx is serving pages
+      - name: Wait for frontend to be ready
+        run: |
+          echo "Waiting for frontend..."
+          timeout 30 sh -c 'until curl -s http://frontend > /dev/null 2>&1; do sleep 2; done'
+          echo "Frontend is ready."
+
+      # Step 5: Run all Playwright E2E tests.
+      # BASE_URL tells playwright.config.ts where the frontend is served.
+      # CI=true enables stricter mode (forbidOnly, 1 worker, 2 retries on failure).
+      - name: Run E2E tests
+        run: npx playwright test
+        env:
+          BASE_URL: "http://frontend"   # overrides the localhost default in playwright.config.ts
+          CI: "true"
+
+      # Step 6: Upload the HTML test report as a GitHub artifact so it can be
+      # downloaded and viewed from the Actions run page — even when tests fail.
+      - name: Upload Playwright HTML report
+        if: always()   # run this step even if the tests failed
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30   # keep the report for 30 days
