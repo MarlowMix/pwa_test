@@ -1,0 +1,248 @@
+<testsuites id="" name="" tests="6" failures="0" skipped="0" errors="6" time="8.586754">
+<testsuite name="gebiet.spec.ts" timestamp="2026-06-08T20:25:01.473Z" hostname="chromium" tests="2" failures="0" skipped="0" time="1.419" errors="2">
+<testcase name="Gebiete &amp; Themen Management › Access Denied for Guests" classname="gebiet.spec.ts" time="0.741">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results/gebiet-Gebiete-Themen-Management-Access-Denied-for-Guests-chromium/error-context.md]]
+
+[[ATTACHMENT|test-results/gebiet-Gebiete-Themen-Management-Access-Denied-for-Guests-chromium/trace.zip]]
+]]>
+</system-out>
+<error message="page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/meineGebiete" type="Error">
+<![CDATA[  [chromium] › gebiet.spec.ts:10:9 › Gebiete & Themen Management › Access Denied for Guests ────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/meineGebiete
+    Call log:
+      - navigating to "http://localhost:3000/meineGebiete", waiting until "load"
+
+
+       at ../pages/GebietPage.ts:12
+
+      10 |     async goto() {
+      11 |
+    > 12 |         await this.page.goto('/meineGebiete');
+         |                         ^
+      13 |     }
+      14 |     async expectAccessDenied() {
+      15 |         await expect(this.page.getByText('Bitte einloggen.')).toBeVisible();
+        at GebietePage.goto (/Users/marlow/Uni/sem6/web/test/pages/GebietPage.ts:12:25)
+        at /Users/marlow/Uni/sem6/web/test/e2e/gebiet.spec.ts:13:27
+
+    Error Context: ../test-results/gebiet-Gebiete-Themen-Management-Access-Denied-for-Guests-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/gebiet-Gebiete-Themen-Management-Access-Denied-for-Guests-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/gebiet-Gebiete-Themen-Management-Access-Denied-for-Guests-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="Gebiete &amp; Themen Management › CRUD Lifecycle for Gebiete and Themen" classname="gebiet.spec.ts" time="0.678">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results/gebiet-Gebiete-Themen-Mana-c1658-ycle-for-Gebiete-and-Themen-chromium/error-context.md]]
+
+[[ATTACHMENT|test-results/gebiet-Gebiete-Themen-Mana-c1658-ycle-for-Gebiete-and-Themen-chromium/trace.zip]]
+]]>
+</system-out>
+<error message="page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/meineGebiete" type="Error">
+<![CDATA[  [chromium] › gebiet.spec.ts:17:9 › Gebiete & Themen Management › CRUD Lifecycle for Gebiete and Themen 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/meineGebiete
+    Call log:
+      - navigating to "http://localhost:3000/meineGebiete", waiting until "load"
+
+
+       at ../pages/GebietPage.ts:12
+
+      10 |     async goto() {
+      11 |
+    > 12 |         await this.page.goto('/meineGebiete');
+         |                         ^
+      13 |     }
+      14 |     async expectAccessDenied() {
+      15 |         await expect(this.page.getByText('Bitte einloggen.')).toBeVisible();
+        at GebietePage.goto (/Users/marlow/Uni/sem6/web/test/pages/GebietPage.ts:12:25)
+        at /Users/marlow/Uni/sem6/web/test/e2e/gebiet.spec.ts:22:27
+
+    Error Context: ../test-results/gebiet-Gebiete-Themen-Mana-c1658-ycle-for-Gebiete-and-Themen-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/gebiet-Gebiete-Themen-Mana-c1658-ycle-for-Gebiete-and-Themen-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/gebiet-Gebiete-Themen-Mana-c1658-ycle-for-Gebiete-and-Themen-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="home.spec.ts" timestamp="2026-06-08T20:25:01.473Z" hostname="chromium" tests="3" failures="0" skipped="0" time="1.786" errors="3">
+<testcase name="Home Page &amp; Login Flow › Login Failed" classname="home.spec.ts" time="0.678">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results/home-Home-Page-Login-Flow-Login-Failed-chromium/error-context.md]]
+
+[[ATTACHMENT|test-results/home-Home-Page-Login-Flow-Login-Failed-chromium/trace.zip]]
+]]>
+</system-out>
+<error message="page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/" type="Error">
+<![CDATA[  [chromium] › home.spec.ts:10:9 › Home Page & Login Flow › Login Failed ───────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/
+    Call log:
+      - navigating to "http://localhost:3000/", waiting until "load"
+
+
+       at ../pages/HomePage.ts:12
+
+      10 |     async goto() {
+      11 |
+    > 12 |         await this.page.goto('/');
+         |                         ^
+      13 |     }
+      14 |
+      15 |     async expectPrivateNotVisable() {
+        at HomePage.goto (/Users/marlow/Uni/sem6/web/test/pages/HomePage.ts:12:25)
+        at /Users/marlow/Uni/sem6/web/test/e2e/home.spec.ts:14:24
+
+    Error Context: ../test-results/home-Home-Page-Login-Flow-Login-Failed-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/home-Home-Page-Login-Flow-Login-Failed-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/home-Home-Page-Login-Flow-Login-Failed-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="Home Page &amp; Login Flow › Login Successful" classname="home.spec.ts" time="0.626">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results/home-Home-Page-Login-Flow-Login-Successful-chromium/error-context.md]]
+
+[[ATTACHMENT|test-results/home-Home-Page-Login-Flow-Login-Successful-chromium/trace.zip]]
+]]>
+</system-out>
+<error message="page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/" type="Error">
+<![CDATA[  [chromium] › home.spec.ts:19:9 › Home Page & Login Flow › Login Successful ───────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/
+    Call log:
+      - navigating to "http://localhost:3000/", waiting until "load"
+
+
+       at ../pages/HomePage.ts:12
+
+      10 |     async goto() {
+      11 |
+    > 12 |         await this.page.goto('/');
+         |                         ^
+      13 |     }
+      14 |
+      15 |     async expectPrivateNotVisable() {
+        at HomePage.goto (/Users/marlow/Uni/sem6/web/test/pages/HomePage.ts:12:25)
+        at /Users/marlow/Uni/sem6/web/test/e2e/home.spec.ts:23:24
+
+    Error Context: ../test-results/home-Home-Page-Login-Flow-Login-Successful-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/home-Home-Page-Login-Flow-Login-Successful-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/home-Home-Page-Login-Flow-Login-Successful-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="Home Page &amp; Login Flow › Public vs Private Visibility" classname="home.spec.ts" time="0.482">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results/home-Home-Page-Login-Flow-Public-vs-Private-Visibility-chromium/error-context.md]]
+
+[[ATTACHMENT|test-results/home-Home-Page-Login-Flow-Public-vs-Private-Visibility-chromium/trace.zip]]
+]]>
+</system-out>
+<error message="page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/" type="Error">
+<![CDATA[  [chromium] › home.spec.ts:28:9 › Home Page & Login Flow › Public vs Private Visibility ───────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/
+    Call log:
+      - navigating to "http://localhost:3000/", waiting until "load"
+
+
+       at ../pages/HomePage.ts:12
+
+      10 |     async goto() {
+      11 |
+    > 12 |         await this.page.goto('/');
+         |                         ^
+      13 |     }
+      14 |
+      15 |     async expectPrivateNotVisable() {
+        at HomePage.goto (/Users/marlow/Uni/sem6/web/test/pages/HomePage.ts:12:25)
+        at /Users/marlow/Uni/sem6/web/test/e2e/home.spec.ts:32:24
+
+    Error Context: ../test-results/home-Home-Page-Login-Flow-Public-vs-Private-Visibility-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/home-Home-Page-Login-Flow-Public-vs-Private-Visibility-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/home-Home-Page-Login-Flow-Public-vs-Private-Visibility-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="user-management.spec.ts" timestamp="2026-06-08T20:25:01.473Z" hostname="chromium" tests="1" failures="0" skipped="0" time="0.461" errors="1">
+<testcase name="User-Management (Professoren) › Login, Anlage, Prüfung, Änderung und Löschung eines Users" classname="user-management.spec.ts" time="0.461">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results/user-management-User-Manag-0e630-ng-und-Löschung-eines-Users-chromium/error-context.md]]
+
+[[ATTACHMENT|test-results/user-management-User-Manag-0e630-ng-und-Löschung-eines-Users-chromium/trace.zip]]
+]]>
+</system-out>
+<error message="page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/" type="Error">
+<![CDATA[  [chromium] › user-management.spec.ts:18:9 › User-Management (Professoren) › Login, Anlage, Prüfung, Änderung und Löschung eines Users 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/
+    Call log:
+      - navigating to "http://localhost:3000/", waiting until "load"
+
+
+       at ../pages/HomePage.ts:12
+
+      10 |     async goto() {
+      11 |
+    > 12 |         await this.page.goto('/');
+         |                         ^
+      13 |     }
+      14 |
+      15 |     async expectPrivateNotVisable() {
+        at HomePage.goto (/Users/marlow/Uni/sem6/web/test/pages/HomePage.ts:12:25)
+        at /Users/marlow/Uni/sem6/web/test/e2e/user-management.spec.ts:24:24
+
+    Error Context: ../test-results/user-management-User-Manag-0e630-ng-und-Löschung-eines-Users-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/user-management-User-Manag-0e630-ng-und-Löschung-eines-Users-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/user-management-User-Manag-0e630-ng-und-Löschung-eines-Users-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+</testsuites>
