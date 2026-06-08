@@ -24,6 +24,8 @@ on:
       - 'package.json'
       - 'package-lock.json'
   workflow_dispatch:         # allow manual trigger from the GitHub Actions UI
+  repository_dispatch:
+    types: [image-updated]   # triggered by backend or frontend repo after pushing a new image
 
 jobs:
   e2e:
