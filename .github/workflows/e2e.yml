@@ -71,9 +71,12 @@ jobs:
           --health-retries 10
           --health-start-period 30s
 
-      # Backend — pulled from ghcr.io (must be a public package or use a PAT)
+      # Backend — pulled from ghcr.io.
+      # When triggered by repository_dispatch the SHA of the new image is passed in
+      # client_payload so we test the exact candidate build, not "latest".
+      # For manual/push triggers there is no SHA, so we fall back to "latest".
       backend:
-        image: ghcr.io/marlowmix/pwa_backend:latest
+        image: ghcr.io/marlowmix/pwa_backend:${{ github.event.client_payload.sha || 'latest' }}
         env:
           # "mongo" resolves to the MongoDB service via Docker's embedded DNS
           DB_CONNECTION_STRING: "mongodb://admin:password@mongo:27017/themenbrett?authSource=admin"
@@ -91,9 +94,10 @@ jobs:
         # Restart if it crashes while Mongo is still starting up
         options: --restart on-failure:5
 
-      # Frontend — nginx serves the static build; entrypoint injects backend URL
+      # Frontend — nginx serves the static build; entrypoint injects backend URL.
+      # Same SHA-fallback strategy as the backend service above.
       frontend:
-        image: ghcr.io/marlowmix/pwa_frontend:latest
+        image: ghcr.io/marlowmix/pwa_frontend:${{ github.event.client_payload.sha || 'latest' }}
         env:
           # The URL the BROWSER uses to reach the backend.
           # With --network host, localhost inside the Playwright container is
