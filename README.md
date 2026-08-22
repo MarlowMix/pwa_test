@@ -4,6 +4,8 @@
 
 This was built as a semester project for a web engineering course at Berliner Hochschule für Technik. The goal was to design and implement a complete web application end-to-end from data modeling and a REST API, through a React frontend, to automated testing, containerization, CI/CD, and a Kubernetes deployment.
 
+**Live demo:** deployed on Oracle Cloud — [marlowpwa.duckdns.org](http://marlowpwa.duckdns.org/)
+
 ## Repositories
 
 This project is split across three repositories:
