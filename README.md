@@ -12,6 +12,24 @@ This project is split across three repositories:
 - **Frontend** — [pwa_frontend](https://github.com/MarlowMix/pwa_frontend): React single-page application
 - **Test** — [pwa_test](https://github.com/MarlowMix/pwa_test): Playwright end-to-end test suite
 
+## Screenshots
+
+**Overview of all subject areas** (public, no login required)
+![Overview of all subject areas](docs/screenshots/uebersicht.png)
+
+**My subject areas** (logged in as a professor, managing topics)
+![My subject areas](docs/screenshots/meine-gebiete.png)
+
+## Load Testing
+
+JMeter load tests uncovered a performance bottleneck in the backend, comparing a local run against the deployment on the university's Kubernetes cluster ("Cloud"). Node clustering (worker processes) fixed it:
+
+![Error rate vs. load, local vs. Kubernetes cluster deployment](docs/loadtest/fehlerquote-vs-last.png)
+
+![Effect of Node clustering](docs/loadtest/nodecluster-lokal.png)
+
+At 500 requests/s, adding 4 worker processes cut the error rate from 46% to 1% and the average login response time from 10.1s to 3.3s.
+
 ## Tech Stack
 
 **Backend**
